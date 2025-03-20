@@ -10,7 +10,7 @@ Servo myservo;
 #define trigPin 13  // Ultrasonic Sensor
 #define echoPin 34
 
-#define servoPin 26   // Servo
+#define servoPin 32   // Servo
 
 long duration;
 float distance;
@@ -35,16 +35,19 @@ void setup() {
   pinMode(m2Dir, OUTPUT);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
+  myservo.setPeriodHertz(50);    // standard 50 hz servo
   myservo.attach(servoPin, 1000, 2000); // attaches the servo
 
-
-  delay(1000);
   stop();
   delay(1000);
 }
 
 void loop() {
-  // Sweep right
+  /*// Sweep right
   right();
   setSpeed(speed);
   for (int i = 0; i < sweepAngle; i++){
@@ -78,13 +81,17 @@ void loop() {
   // Drive forward until Cod
   forward();
   setSpeed(speed);
-  while (pulse() > 5){
+  while (pulse() > 5 ){
     //Do nothing
     delay(50);
   }
 
   stop();
-  delay(1000);
+  delay(1000);*/
+  forward();
+  delay(200);
+  stop();
+
 
   // Lift repeatedly
   while (true){
@@ -93,7 +100,7 @@ void loop() {
 		myservo.write(pos);    // tell servo to go to position in variable 'pos'
 		delay(15);             // waits 15ms for the servo to reach the position
 	  }
-	  for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+    for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
 		  myservo.write(pos);    // tell servo to go to position in variable 'pos'
 		  delay(15);             // waits 15ms for the servo to reach the position
 	  }
